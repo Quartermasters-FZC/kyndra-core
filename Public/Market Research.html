@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kyndra P-SaaS: Interactive Market Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Application Structure Plan: 
+        The SPA is structured into thematic sections, navigated by a sticky top bar. This design allows users to progressively explore the report's content, from a high-level market overview to specific state opportunities, competitive analysis, policy considerations, market sizing, and finally, strategic recommendations.
+        Key Sections & Interactions:
+        1.  Welcome & Market Snapshot: Introduces the topic with key market size figures and a growth chart (Line Chart for U.S. Virtual Schools Market).
+        2.  The School Choice Wave: Highlights the growth of voucher/ESA programs (Donut Chart for ESA bill preference, Big Numbers for student participation).
+        3.  State Opportunity Explorer: An interactive section where users select a state from a dropdown to see detailed information (program type, funding, online use, competitors) displayed in a dynamic card. This is the primary interactive data exploration tool.
+        4.  Competitive Landscape: Presents major competitors in card format, detailing their offerings and weaknesses. A separate list highlights gaps Kyndra can exploit.
+        5.  Policy & Legal Compass: Summarizes key policy trends and legal considerations using structured text.
+        6.  Kyndra's Market Sizing (TAM/SAM/SOM): Displays TAM, SAM, and SOM figures using prominent "Big Number" cards.
+        7.  Strategic Blueprint: Lists key strategic recommendations for Kyndra.
+        User Flow: Users can navigate linearly through sections or jump to specific areas of interest using the navigation bar. The state explorer encourages deeper dives into specific geographical opportunities.
+        Rationale: This structure breaks down a dense report into digestible, interactive modules, prioritizing user understanding and ease of navigation over a direct replication of the report's chapter structure. It aims to tell a story, guiding the user from the broad market context to specific opportunities and strategies for Kyndra.
+    -->
+    <!-- Visualization & Content Choices:
+        - U.S. Virtual Schools Market Growth (Report Sec I):
+            - Goal: Inform, Change. Viz: Line Chart (Chart.js). Interaction: Tooltips. Justification: Shows trend effectively. Library: Chart.js (Canvas).
+        - ESA Bill Preference (Report Sec I):
+            - Goal: Inform. Viz: Donut Chart (Chart.js). Interaction: Tooltips. Justification: Shows proportion clearly. Library: Chart.js (Canvas).
+        - State-Level Data (Report Sec II, Table 2):
+            - Goal: Explore, Compare, Inform. Viz: Dynamic Info Cards updated by Dropdown Selector. Interaction: User selects state, card updates. Justification: Manages large dataset interactively. Method: JS DOM manipulation.
+        - Competitor Profiles (Report Sec III):
+            - Goal: Compare, Inform. Viz: HTML Cards. Interaction: Static display. Justification: Clear presentation of competitor details. Method: HTML/Tailwind.
+        - Market Gaps (Report Sec III):
+            - Goal: Inform. Viz: HTML List with Unicode icons. Interaction: Static. Justification: Highlights opportunities. Method: HTML/Tailwind.
+        - TAM/SAM/SOM (Report Sec V):
+            - Goal: Inform, Compare. Viz: "Big Number" HTML Cards. Interaction: Static. Justification: Impactful display of key metrics. Method: HTML/Tailwind.
+        - Policy/Legal Info & Recommendations (Report Sec IV, VI):
+            - Goal: Inform. Viz: Structured HTML Text. Interaction: Static. Justification: Clear textual summary. Method: HTML/Tailwind.
+        - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. All charts are Chart.js on Canvas. Icons are Unicode.
+    -->
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F8F9FA; color: #212529; }
+        .nav-link { color: #F8F9FA; }
+        .nav-link:hover, .nav-link.active { color: #D4A373; } /* Warm Beige for hover/active */
+        .section-title { color: #6c757d; } /* Muted Gray-Blue */
+        .stat-card { background-color: #FFFFFF; border-left: 5px solid #A07855; } /* Muted Brown/Tan accent */
+        .highlight-text { color: #A07855; } /* Muted Brown/Tan */
+        .chart-container { position: relative; width: 100%; max-width: 600px; margin-left: auto; margin-right: auto; height: 300px; max-height: 350px; }
+        @media (min-width: 768px) { .chart-container { height: 350px; max-height: 400px; } }
+        .btn-primary { background-color: #A07855; color: #FFFFFF; }
+        .btn-primary:hover { background-color: #B08968; } /* Slightly darker warm brown */
+        .nav-bg { background-color: #343A40; } /* Dark Gray for Nav */
+        .tab-content { display: none; }
+        .tab-content.active { display: block; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <nav class="nav-bg sticky top-0 z-50 shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <span class="font-bold text-xl nav-link">Kyndra P-SaaS Insights</span>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#welcome" class="nav-link px-3 py-2 rounded-md text-sm font-medium active">Welcome</a>
+                        <a href="#market-wave" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Market Wave</a>
+                        <a href="#state-explorer" class="nav-link px-3 py-2 rounded-md text-sm font-medium">States</a>
+                        <a href="#competitive" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Competitors</a>
+                        <a href="#policy" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Policy</a>
+                        <a href="#market-size" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Sizing</a>
+                        <a href="#strategy" class="nav-link px-3 py-2 rounded-md text-sm font-medium">Strategy</a>
+                    </div>
+                </div>
+                <div class="-mr-2 flex md:hidden">
+                    <button type="button" id="mobile-menu-button" class="nav-bg inline-flex items-center justify-center p-2 rounded-md nav-link hover:text-white hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white" aria-controls="mobile-menu" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="md:hidden hidden" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#welcome" class="nav-link block px-3 py-2 rounded-md text-base font-medium active">Welcome</a>
+                <a href="#market-wave" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Market Wave</a>
+                <a href="#state-explorer" class="nav-link block px-3 py-2 rounded-md text-base font-medium">States</a>
+                <a href="#competitive" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Competitors</a>
+                <a href="#policy" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Policy</a>
+                <a href="#market-size" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Sizing</a>
+                <a href="#strategy" class="nav-link block px-3 py-2 rounded-md text-base font-medium">Strategy</a>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        
+        <section id="welcome" class="tab-content active p-6 bg-white shadow-lg rounded-lg mb-8">
+            <h2 class="text-3xl font-bold section-title mb-4">Welcome to Kyndra's P-SaaS Market Explorer</h2>
+            <p class="text-lg mb-6">This interactive report synthesizes key findings on the U.S. K-12 AI-Powered Private School as a Service (P-SaaS) landscape. Discover market trends, state-level opportunities, competitive dynamics, and strategic insights relevant to Kyndra's growth.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                <div class="stat-card p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold highlight-text mb-2">U.S. Virtual Schools Market (2023)</h3>
+                    <p class="text-4xl font-bold">$3.56 Billion</p>
+                    <p class="text-sm text-gray-600">A significant foundational market for P-SaaS models.</p>
+                </div>
+                <div class="stat-card p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold highlight-text mb-2">Projected Market (2030)</h3>
+                    <p class="text-4xl font-bold">$8.09 Billion</p>
+                    <p class="text-sm text-gray-600">Indicating strong growth at a CAGR of 12.4%.</p>
+                </div>
+            </div>
+            <p class="text-md mb-4">The U.S. K-12 online education sector is rapidly evolving, driven by demand for personalized learning and supportive state policies. Kyndra's AI-driven platform is well-positioned to capitalize on these trends.</p>
+            <div class="chart-container">
+                <canvas id="marketGrowthChart"></canvas>
+            </div>
+            <p class="text-center text-sm text-gray-500 mt-2">U.S. Virtual Schools Market Size Projection (USD Billions)</p>
+        </section>
+
+        <section id="market-wave" class="tab-content p-6 bg-white shadow-lg rounded-lg mb-8">
+            <h2 class="text-3xl font-bold section-title mb-4">The School Choice Wave</h2>
+            <p class="text-lg mb-6">The expansion of state-funded school choice programs, especially Education Savings Accounts (ESAs), is a critical catalyst for the P-SaaS market.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+                <div>
+                    <div class="stat-card p-6 rounded-lg shadow mb-6">
+                        <h3 class="text-xl font-semibold highlight-text mb-2">School Choice Participation</h3>
+                        <p class="text-4xl font-bold">1 Million+</p>
+                        <p class="text-sm text-gray-600">Students in programs (2024), nearly doubled since 2020.</p>
+                    </div>
+                    <p class="text-md">This growth creates a substantial, publicly-funded student base for innovative online education providers like Kyndra. ESAs offer flexibility, allowing funds for comprehensive services including online tuition, tutoring, and technology.</p>
+                </div>
+                <div>
+                    <div class="chart-container h-72 max-w-sm">
+                        <canvas id="esaPreferenceChart"></canvas>
+                    </div>
+                    <p class="text-center text-sm text-gray-500 mt-2">Percentage of School Choice Bills Introduced (2023)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="state-explorer" class="tab-content p-6 bg-white shadow-lg rounded-lg mb-8">
+            <h2 class="text-3xl font-bold section-title mb-4">State Opportunity Explorer</h2>
+            <p class="text-lg mb-6">Select a state to explore its school choice programs, funding, and potential for online K-12 providers. Focus is on states with universal or near-universal access programs.</p>
+            <div class="mb-6">
+                <label for="stateSelector" class="block text-sm font-medium text-gray-700 mb-1">Select State:</label>
+                <select id="stateSelector" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-A07855 focus:border-A07855 sm:text-sm rounded-md shadow-sm">
+                    <option value="">-- Select a State --</option>
+                </select>
+            </div>
+            <div id="stateDetailsCard" class="bg-gray-50 p-6 rounded-lg shadow-inner min-h-[300px]">
+                <p class="text-gray-500">State details will appear here.</p>
+            </div>
+        </section>
+
+        <section id="competitive" class="tab-content p-6 bg-white shadow-lg rounded-lg mb-8">
+            <h2 class="text-3xl font-bold section-title mb-4">Competitive Landscape</h2>
+            <p class="text-lg mb-6">Key players in the voucher-funded online K-12 space present both challenges and opportunities. Understanding their models is crucial for Kyndra's differentiation.</p>
+            <div id="competitorCardsContainer" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            </div>
+            <h3 class="text-2xl font-semibold section-title mt-8 mb-3">Gaps Kyndra Can Exploit:</h3>
+            <ul id="marketGapsList" class="list-disc list-inside space-y-2 text-gray-700">
+            </ul>
+        </section>
+
+        <section id="policy" class="tab-content p-6 bg-white shadow-lg rounded-lg mb-8">
+            <h2 class="text-3xl font-bold section-title mb-4">Policy & Legal Compass</h2>
+            <p class="text-lg mb-6">The regulatory environment for school choice and virtual education is dynamic. Kyndra must navigate this landscape strategically.</p>
+            <div class="space-y-6">
+                <div>
+                    <h3 class="text-xl font-semibold highlight-text mb-2">Key Policy Trends:</h3>
+                    <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li>Strong federal and state-level support for expanding educational choice.</li>
+                        <li>Rapid adoption of universal or near-universal ESA programs.</li>
+                        <li>Increased legislative activity (2023-2025) broadening access to private/online schooling.</li>
+                        <li>Growing preference for ESAs due to flexibility in funding online learning.</li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold highlight-text mb-2">Legal & Compliance Considerations:</h3>
+                     <ul class="list-disc list-inside space-y-1 text-gray-700">
+                        <li>Accreditation: Meeting state-specific and recognized agency standards is vital.</li>
+                        <li>Nondiscrimination: Adherence to federal/state laws is critical with public funds.</li>
+                        <li>Accountability & Transparency: Expect stringent reporting on student progress and financials.</li>
+                        <li>Funding Stability: Monitor legal challenges and changes in state funding mechanisms.</li>
+                        <li>Program Specifics: Comply with unique eligibility, application, and expense rules per state.</li>
+                    </ul>
+                </div>
+                <p class="text-md">A proactive legal and compliance strategy is essential for navigating evolving regulations and mitigating risks.</p>
+            </div>
+        </section>
+
+        <section id="market-size" class="tab-content p-6 bg-white shadow-lg rounded-lg mb-8">
+            <h2 class="text-3xl font-bold section-title mb-4">Kyndra's Market Sizing (TAM, SAM, SOM)</h2>
+            <p class="text-lg mb-6">Understanding the market potential helps define Kyndra's growth trajectory.</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="stat-card p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold highlight-text mb-2">Total Addressable Market (TAM)</h3>
+                    <p class="text-3xl font-bold">$3.56B <span class="text-lg">(2023)</span></p>
+                    <p class="text-2xl font-bold text-gray-600">➔ $8.09B <span class="text-lg">(2030 Proj.)</span></p>
+                    <p class="text-sm text-gray-600 mt-1">U.S. K-12 Virtual Schools Market.</p>
+                </div>
+                <div class="stat-card p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold highlight-text mb-2">Serviceable Addressable Market (SAM)</h3>
+                    <p class="text-3xl font-bold">~$6.94 Billion</p>
+                    <p class="text-lg text-gray-600">(~870,000 Students)</p>
+                    <p class="text-sm text-gray-600 mt-1">Annual funding via choice programs in key universal access states.</p>
+                </div>
+                <div class="stat-card p-6 rounded-lg shadow">
+                    <h3 class="text-xl font-semibold highlight-text mb-2">Serviceable Obtainable Market (SOM) - Year 1</h3>
+                    <p class="text-3xl font-bold">630 - 1,260 Students</p>
+                    <p class="text-lg text-gray-600">($4.1M - $8.2M Revenue)</p>
+                    <p class="text-sm text-gray-600 mt-1">Conservative projection based on initial targeted states.</p>
+                </div>
+            </div>
+            <p class="mt-6 text-md">These figures illustrate a substantial and expanding market opportunity for Kyndra, particularly within the publicly-funded school choice segment.</p>
+        </section>
+
+        <section id="strategy" class="tab-content p-6 bg-white shadow-lg rounded-lg mb-8">
+            <h2 class="text-3xl font-bold section-title mb-4">Strategic Blueprint for Kyndra</h2>
+            <p class="text-lg mb-6">Key recommendations to guide Kyndra's market entry and growth:</p>
+            <div class="space-y-4">
+                <div class="p-4 border border-gray-200 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold highlight-text mb-1">🎯 1. Prioritize Universal ESA States</h3>
+                    <p class="text-gray-700">Focus on states like FL, AZ, IA, UT, WV with clear online funding via ESAs. Develop strong relationships with state bodies and SFOs.</p>
+                </div>
+                <div class="p-4 border border-gray-200 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold highlight-text mb-1">💡 2. Emphasize AI-Driven Differentiation</h3>
+                    <p class="text-gray-700">Clearly market AI-powered personalization, diagnostics, and career pathways to address unmet needs and showcase superior student outcomes.</p>
+                </div>
+                <div class="p-4 border border-gray-200 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold highlight-text mb-1">🛡️ 3. Implement Robust Legal & Compliance</h3>
+                    <p class="text-gray-700">Establish dedicated legal/compliance functions to monitor changes, ensure adherence to state rules, and manage risks proactively.</p>
+                </div>
+                <div class="p-4 border border-gray-200 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold highlight-text mb-1">🤝 4. Foster Strong Community Engagement</h3>
+                    <p class="text-gray-700">Integrate platform features for student interaction (collaborative projects, virtual clubs) to combat isolation and enhance engagement.</p>
+                </div>
+                <div class="p-4 border border-gray-200 rounded-lg shadow-sm">
+                    <h3 class="text-xl font-semibold highlight-text mb-1">🚀 5. Develop a Scalable Operational Model</h3>
+                    <p class="text-gray-700">Invest in scalable infrastructure and teacher support systems, leveraging AI for efficiency, to maintain quality during rapid growth.</p>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-gray-100 border-t border-gray-200 mt-12">
+        <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-sm text-gray-500">&copy; 2025 Kyndra P-SaaS Interactive Market Report. All data derived from the source market research report.</p>
+        </div>
+    </footer>
+
+<script>
+    const chartColors = {
+        primary: '#A07855', // Muted Brown/Tan
+        secondary: '#D4A373', // Warm Beige
+        accent1: '#CCD5AE', // Pale Green
+        accent2: '#E9EDC9', // Creamy Yellow
+        textDark: '#212529'
+    };
+
+    const commonChartOptions = (legendDisplay = true) => ({
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: {
+                display: legendDisplay,
+                labels: { color: chartColors.textDark }
+            },
+            tooltip: {
+                callbacks: {
+                    title: function(tooltipItems) {
+                        const item = tooltipItems[0];
+                        let label = item.chart.data.labels[item.dataIndex];
+                        return Array.isArray(label) ? label.join(' ') : label;
+                    }
+                }
+            }
+        },
+        scales: {
+            x: { ticks: { color: chartColors.textDark }, grid: { color: 'rgba(0,0,0,0.05)' } },
+            y: { ticks: { color: chartColors.textDark }, grid: { color: 'rgba(0,0,0,0.05)' } }
+        }
+    });
+    
+    function wrapLabel(str, maxWidth = 16) {
+        if (typeof str !== 'string' || str.length <= maxWidth) return str;
+        const words = str.split(' ');
+        const lines = [];
+        let currentLine = '';
+        for (const word of words) {
+            if ((currentLine + word).length > maxWidth && currentLine.length > 0) {
+                lines.push(currentLine.trim());
+                currentLine = '';
+            }
+            currentLine += word + ' ';
+        }
+        if (currentLine.trim().length > 0) lines.push(currentLine.trim());
+        return lines.length > 0 ? lines : [str];
+    }
+
+    const marketGrowthData = {
+        labels: ['2023', '2024', '2025', '2026', '2027', '2028', '2029', '2030'],
+        datasets: [{
+            label: 'Market Size (USD Billion)',
+            data: [3.56, 4.00, 4.49, 5.05, 5.68, 6.38, 7.17, 8.09],
+            borderColor: chartColors.primary,
+            backgroundColor: 'rgba(160, 120, 85, 0.1)',
+            fill: true,
+            tension: 0.1
+        }]
+    };
+    const marketGrowthCtx = document.getElementById('marketGrowthChart').getContext('2d');
+    new Chart(marketGrowthCtx, {
+        type: 'line',
+        data: marketGrowthData,
+        options: { ...commonChartOptions(false), scales: {...commonChartOptions().scales, y: {...commonChartOptions().scales.y, beginAtZero: true, ticks: { callback: value => '$' + value + 'B' }}}}
+    });
+
+    const esaPreferenceData = {
+        labels: ['ESA Bills (79%)', 'Other Choice Bills (21%)'],
+        datasets: [{
+            data: [79, 21],
+            backgroundColor: [chartColors.primary, chartColors.accent1],
+            borderColor: '#FFFFFF',
+            borderWidth: 2
+        }]
+    };
+    const esaPreferenceCtx = document.getElementById('esaPreferenceChart').getContext('2d');
+    new Chart(esaPreferenceCtx, {
+        type: 'doughnut',
+        data: esaPreferenceData,
+        options: {...commonChartOptions(), plugins: {...commonChartOptions().plugins, legend: {position: 'bottom'}}}
+    });
+
+    const stateData = {
+        "Florida": {
+            program: "FES-EO (Universal ESA), FES-UA, FTC, Hope",
+            universal: "Yes (FES-EO)",
+            eligibility: "FES-EO: All K-12 FL residents. FES-UA: Students with disabilities.",
+            studentsServed: "494,238 (2024-25, Step Up)",
+            voucherAmount: "FES-EO: ~$8,200 (2024-25). FES-UA: ~$10,000.",
+            onlineUse: "Yes",
+            competitors: "FLVS, K12-schools, Connections Academy, Mater Academy Virtual, Optima Classical",
+            opportunity: "High"
+        },
+        "Arizona": {
+            program: "Empowerment Scholarship Accounts (ESA)",
+            universal: "Yes",
+            eligibility: "All K-12 students eligible for public school. Preschool w/ MET/IEP/504.",
+            studentsServed: "83,032 (2024-25)",
+            voucherAmount: "Avg. $9,572 (2024-25); Median $7,409 (2023-24, excl. SPED).",
+            onlineUse: "Yes",
+            competitors: "Acellus Academy, Enlightium Academy, American Virtual Academy, AZ Connections Academy",
+            opportunity: "High"
+        },
+        "North Carolina": {
+            program: "Opportunity Scholarship (Universal Voucher), ESA+ (Universal ESA for Disabilities)",
+            universal: "Yes (Opportunity Scholarship)",
+            eligibility: "Opportunity: All K-12 students. ESA+: Students with documented disabilities.",
+            studentsServed: "Opportunity: 32,549 (2023-24). ESA+: 3,566 (2023-24).",
+            voucherAmount: "Opportunity: ~$3,000-$7,000. ESA+: Base $9,000, up to $17,000.",
+            onlineUse: "Yes (ESA+ explicitly, Opportunity for CM Prep)",
+            competitors: "Coast to Mountains Preparatory Academy (K12), NC Virtual Academy (K12)",
+            opportunity: "High"
+        },
+         "Iowa": {
+            program: "Students First Education Savings Account (ESA)",
+            universal: "Yes (by 2025-26)",
+            eligibility: "Phased until 2025-26 (prior public, K entry, income). Universal from 2025-26.",
+            studentsServed: "27,866 (Fall 2024)",
+            voucherAmount: "$7,826 (2025-26)",
+            onlineUse: "Yes",
+            competitors: "Iowa Connections Academy, Ideal School, Iowa Virtual Academy (K12)",
+            opportunity: "High"
+        },
+        "Utah": {
+            program: "Utah Fits All Scholarship Program (Universal ESA)",
+            universal: "Yes",
+            eligibility: "All K-12 residents eligible for public school. Home-based eligible.",
+            studentsServed: "Limited to 10,000 (2024-25)",
+            voucherAmount: "$8,000 (2024-25). Home-based: $4,000-$6,000.",
+            onlineUse: "Yes",
+            competitors: "Ideal School, Accelerate Academy, Northgate Academy, Prenda",
+            opportunity: "High"
+        },
+        "Indiana": {
+            program: "Choice Scholarship Program (Universal Voucher)",
+            universal: "Yes",
+            eligibility: "All IN residents 5-21. No income/prior public school requirement.",
+            studentsServed: "75,269 (Fall 2024)",
+            voucherAmount: "$6,264 (2023-24 avg). Max $8,101.83 (2025-26).",
+            onlineUse: "Yes (3 specific online schools)",
+            competitors: "GEO Focus Academy, Faith Prep Academy, Marian University Prep",
+            opportunity: "High"
+        },
+        "Oklahoma": {
+            program: "Parental Choice Tax Credit Act (Universal Refundable Tax Credit)",
+            universal: "Yes",
+            eligibility: "All OK students for accredited private/homeschool. Income-tiered credits.",
+            studentsServed: "36,860 approved (2025-26)",
+            voucherAmount: "$5,000-$7,500 (private); $1,000 (homeschool).",
+            onlineUse: "Yes (for nonpublic online learning for homeschool)",
+            competitors: "Dove Virtual, Epic Virtual, OK Connections Academy, OK Virtual Charter Academy",
+            opportunity: "Moderate"
+        },
+        "Ohio": {
+            program: "EdChoice Expansion Scholarship (Universal Voucher)",
+            universal: "Yes",
+            eligibility: "All K-12 students.",
+            studentsServed: "41,303 (2023-24, EdChoice)",
+            voucherAmount: "Max $6,166 (K-8) / $8,408 (9-12).",
+            onlineUse: "Unspecified (for 'chartered nonpublic schools')",
+            competitors: "Dominion Academy, Beaumont School, Immaculate Heart of Mary, Canton Country Day",
+            opportunity: "Moderate"
+        },
+        "West Virginia": {
+            program: "Hope Scholarship Program (Universal ESA)",
+            universal: "Yes (by 2026-27)",
+            eligibility: "Phased until 2026-27 (prior public/K entry). Universal from 2026-27.",
+            studentsServed: ">10,000 (2024-25)",
+            voucherAmount: "$5,267.38 (2025-26)",
+            onlineUse: "Yes",
+            competitors: "WV Virtual Academy (K12), Enlightium Academy, Northgate Academy",
+            opportunity: "High"
+        },
+        "Wisconsin": {
+            program: "MPCP, RPCP, WPCP, SNSP (Vouchers)",
+            universal: "No (Income/Location-based, WPCP becoming universal)",
+            eligibility: "Income/Location based. WPCP caps increasing to no limit (2026-27).",
+            studentsServed: "~59,000 total",
+            voucherAmount: "MPCP/WPCP: $10,237 (K-8) / $12,731 (9-12). SNSP: $15,065.",
+            onlineUse: "Yes",
+            competitors: "Academy of Excellence, Shining Star, Pella Hill Virtual, WI Virtual Academy (K12)",
+            opportunity: "Moderate"
+        }
+    };
+    const stateSelector = document.getElementById('stateSelector');
+    const stateDetailsCard = document.getElementById('stateDetailsCard');
+    Object.keys(stateData).forEach(stateName => {
+        const option = document.createElement('option');
+        option.value = stateName;
+        option.textContent = stateName;
+        stateSelector.appendChild(option);
+    });
+    stateSelector.addEventListener('change', (event) => {
+        const selectedStateName = event.target.value;
+        if (selectedStateName && stateData[selectedStateName]) {
+            const data = stateData[selectedStateName];
+            stateDetailsCard.innerHTML = `
+                <h3 class="text-2xl font-semibold highlight-text mb-3">${selectedStateName}</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-2 text-sm">
+                    <p><strong>Program(s):</strong> ${data.program}</p>
+                    <p><strong>Universal Access:</strong> ${data.universal}</p>
+                    <p class="md:col-span-2"><strong>Eligibility Summary:</strong> ${data.eligibility}</p>
+                    <p><strong>Students Served:</strong> ${data.studentsServed}</p>
+                    <p><strong>Avg./Max Voucher:</strong> ${data.voucherAmount}</p>
+                    <p><strong>Online School Use:</strong> ${data.onlineUse}</p>
+                    <p class="md:col-span-2"><strong>Notable Competitors:</strong> ${data.competitors}</p>
+                    <p><strong>Market Opportunity:</strong> <span class="font-semibold ${data.opportunity === 'High' ? 'text-green-600' : 'text-yellow-600'}">${data.opportunity}</span></p>
+                </div>
+            `;
+        } else {
+            stateDetailsCard.innerHTML = '<p class="text-gray-500">Select a state to see details.</p>';
+        }
+    });
+
+    const competitorsData = [
+        { name: "Stride Inc. (K12)", revenue: "$2.37B+ (FY25 Forecast)", offerings: "Personalized learning, Cognia-accredited, career pathways, AI exploration for leaders.", weaknesses: "Mixed reviews on communication, tech issues, social aspect neglect." },
+        { name: "Connections Academy", revenue: "Taxpayer-funded (operates public schools)", offerings: "Accredited courses, state-certified teachers, STEAM, dual-enrollment.", weaknesses: "Overwhelming workload, lack of social interaction, inconsistent teacher responsiveness." },
+        { name: "Acellus Academy", revenue: "ESA-funded & tuition plans", offerings: "Self-paced video learning, Prism Diagnostics, adaptive courses, STEM-10.", weaknesses: "Lack of live support/social interaction, curriculum simplicity concerns, rigid assessments." },
+        { name: "Enlightium Academy", revenue: "Tuition & state scholarships", offerings: "Christ-centered, accredited, flexible learning, AP/Dual Enrollment.", weaknesses: "Slow teacher response, outdated platform, limited interactivity, curriculum bias concerns." },
+        { name: "Prenda", revenue: "$2,199/student fee, state funds", offerings: "Microschools, student-led, mastery-based, adaptive diagnostics, >20 learning tools.", weaknesses: "Lack of accreditation in many microschools, guides not always licensed teachers, resource limitations." }
+    ];
+    const competitorCardsContainer = document.getElementById('competitorCardsContainer');
+    competitorsData.forEach(comp => {
+        const card = `
+            <div class="stat-card p-4 rounded-lg shadow">
+                <h4 class="text-lg font-semibold highlight-text mb-1">${comp.name}</h4>
+                <p class="text-xs text-gray-500 mb-1"><strong>Est. Revenue/Model:</strong> ${comp.revenue}</p>
+                <p class="text-xs mb-1"><strong>Key Offerings:</strong> ${comp.offerings}</p>
+                <p class="text-xs text-red-600"><strong>Potential Weaknesses:</strong> ${comp.weaknesses}</p>
+            </div>
+        `;
+        competitorCardsContainer.innerHTML += card;
+    });
+    
+    const marketGaps = [
+        "Lack of True Personalization & Adaptive Learning",
+        "Insufficient Diagnostic Capabilities & Targeted Intervention",
+        "Limited AI Integration for Core Instruction & Support",
+        "Weak or Generic Career Pathway Integration",
+        "Inconsistent Teacher Support & Engagement",
+        "Addressing Social-Emotional Learning & Engagement Needs"
+    ];
+    const marketGapsList = document.getElementById('marketGapsList');
+    marketGaps.forEach(gap => {
+        const listItem = `<li><span class="text-A07855 mr-2">⚡</span>${gap}</li>`;
+        marketGapsList.innerHTML += listItem;
+    });
+
+    const navLinks = document.querySelectorAll('nav a');
+    const sections = document.querySelectorAll('.tab-content');
+    const mobileMenuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    function updateActiveNav(targetId) {
+        navLinks.forEach(link => {
+            link.classList.remove('active', 'font-bold', 'text-D4A373');
+            link.classList.add('nav-link');
+            if (link.getAttribute('href') === targetId) {
+                link.classList.add('active', 'font-bold', 'text-D4A373');
+                link.classList.remove('nav-link');
+            }
+        });
+    }
+    
+    function showSection(targetId) {
+        sections.forEach(section => {
+            section.classList.remove('active');
+            if ('#' + section.id === targetId) {
+                section.classList.add('active');
+            }
+        });
+        updateActiveNav(targetId);
+        if (mobileMenu.classList.contains('block')) { // Close mobile menu on navigation
+            mobileMenu.classList.remove('block');
+            mobileMenu.classList.add('hidden');
+            mobileMenuButton.querySelectorAll('svg')[0].classList.remove('hidden');
+            mobileMenuButton.querySelectorAll('svg')[1].classList.add('hidden');
+        }
+    }
+
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            showSection(targetId);
+            if (history.pushState) {
+                 history.pushState(null, null, targetId);
+            } else {
+                location.hash = targetId;
+            }
+        });
+    });
+    
+    mobileMenuButton.addEventListener('click', () => {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+        mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+        mobileMenu.classList.toggle('hidden');
+        mobileMenu.classList.toggle('block');
+        mobileMenuButton.querySelectorAll('svg')[0].classList.toggle('hidden');
+        mobileMenuButton.querySelectorAll('svg')[1].classList.toggle('hidden');
+    });
+
+    window.addEventListener('popstate', () => {
+        if (location.hash) {
+            showSection(location.hash);
+        } else {
+            showSection('#welcome'); // Default section
+        }
+    });
+
+    if (location.hash) {
+        showSection(location.hash);
+    } else {
+        showSection('#welcome'); // Default section
+    }
+
+</script>
+</body>
+</html>

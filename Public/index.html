@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kyndra – Your Child’s Future, Personalized.</title>
+  <meta name="description" content="Kyndra is developing an AI-Powered Private Schooling platform. At Home. On Your Terms. A smarter, safer, and more scalable alternative to traditional education.">
+  <meta name="keywords" content="Kyndra, AI education, personalized learning, P-SaaS, EdTech, future of learning, homeschool, microschool, school choice, safety in schools, Aliff Capital, Skillvenza, Quartermasters">
+  <meta name="author" content="Kyndra (A project of Aliff Capital, Skillvenza, and Quartermasters)">
+
+  <meta property="og:title" content="Kyndra – AI-Powered Private Schooling. At Home. On Your Terms.">
+  <meta property="og:description" content="Discover Kyndra: A personalized education platform combining flexibility, rigor, and AI for a smarter, safer, scalable learning experience.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://kyndra-core.vercel.app/kyndra_og_user_content_v5.png"> 
+  <meta property="og:url" content="https://kyndra-core.vercel.app/">
+
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Kyndra: Personalized Education for the 21st Century">
+  <meta name="twitter:description" content="Kyndra offers AI-powered private schooling, addressing the limitations of traditional systems. Learn anytime, anywhere, safely.">
+  <meta name="twitter:image" content="https://kyndra-core.vercel.app/kyndra_twitter_user_content_v5.png"> 
+  <link rel="icon" href="https://kyndra-core.vercel.app/favicon.ico" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet"/>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: #F9FAFB; 
+      color: #111827; 
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+    .text-gradient-kyndra {
+      background-image: linear-gradient(to right, #2563EB, #7C3AED);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .bg-gradient-kyndra-btn {
+      background-image: linear-gradient(to right, #2563EB 0%, #7C3AED 50%, #2563EB 100%);
+      background-size: 200% auto;
+      transition: background-position 0.5s ease;
+    }
+    .bg-gradient-kyndra-btn:hover {
+      background-position: right center;
+    }
+    .sticky-nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000; 
+      transition: background-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+    .nav-scrolled {
+      background-color: rgba(255, 255, 255, 0.9); 
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    .nav-link {
+        color: #4B5563; 
+        transition: color 0.2s ease-in-out;
+        position: relative;
+        padding-bottom: 4px;
+    }
+    .nav-link:hover { color: #2563EB; }
+    .nav-link.active { color: #2563EB !important; font-weight: 600; }
+    .nav-link.active::after, .nav-link:hover::after {
+        content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 2px;
+        background-color: #2563EB; transform: scaleX(0); transform-origin: bottom left;
+        transition: transform 0.3s ease-out;
+    }
+    .nav-link.active::after { transform: scaleX(1); }
+    .nav-link:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+    
+    #hero-particles { position: absolute; width: 100%; height: 100%; top: 0; left: 0; z-index: 0; }
+    .hero-content-wrapper { position: relative; z-index: 1; }
+    .section-title { font-size: 2.25rem; line-height: 1.2; font-weight: 800; color: #1f2937; } /* Slightly smaller for more content */
+    @media (min-width: 768px) { .section-title { font-size: 2.75rem; } } /* Adjusted md size */
+    .section-subtitle { font-size: 1.125rem; line-height: 1.75rem; color: #4B5563; max-width: 768px; margin-left: auto; margin-right: auto; }
+    .card-hover-effect { transition: transform 0.3s ease-out, box-shadow 0.3s ease-out; }
+    .card-hover-effect:hover { transform: translateY(-8px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03); }
+    .lxd-tab { transition: background-color 0.3s, color 0.3s, border-color 0.3s; }
+    .lxd-tab.active { background-color: #2563EB; color: white; border-color: #2563EB; }
+    .footer-link:hover { color: #2563EB; }
+    .animated-icon { transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); }
+    .group:hover .animated-icon { transform: scale(1.15) rotate(3deg); }
+    .lxd-visual-asset { width: 100%; max-width: 400px; height: auto; border-radius: 0.75rem; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.07), 0 4px 6px -2px rgba(0,0,0,0.04); margin-left: auto; margin-right: auto; }
+    .quote-block { border-left: 4px solid #4F46E5; /* Indigo-600 */ }
+    .benefit-card { background-color: #ffffff; border: 1px solid #E5E7EB; }
+  </style>
+</head>
+
+<body class="antialiased">
+
+  <nav id="mainNav" class="sticky-nav w-full bg-white/0">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="flex items-center justify-between h-20">
+        <div class="flex items-center">
+          <a href="#hero" class="text-4xl font-extrabold text-gradient-kyndra">Kyndra</a>
+        </div>
+        <div class="hidden md:flex items-center space-x-8">
+          <a href="#hero" class="nav-link active">Home</a>
+          <a href="#why-kyndra" class="nav-link">Why Kyndra?</a>
+          <a href="#problems" class="nav-link">Problems We Solve</a>
+          <a href="#modules" class="nav-link">Modules</a>
+          <a href="#stakeholders" class="nav-link">For Whom?</a>
+          <a href="#contact" class="bg-gradient-kyndra-btn text-white px-6 py-2.5 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300">Join Early Access</a>
+        </div>
+        <div class="md:hidden flex items-center">
+          <button id="mobileMenuButton" class="text-gray-700 hover:text-blue-600 focus:outline-none p-2 rounded-md" aria-label="Open mobile menu">
+            <svg class="w-7 h-7" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+    <div id="mobileMenu" class="hidden md:hidden bg-white shadow-xl absolute w-full">
+      <div class="pt-2 pb-3 space-y-1">
+        <a href="#hero" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-500 hover:text-blue-600 mobile-nav-link">Home</a>
+        <a href="#why-kyndra" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-500 hover:text-blue-600 mobile-nav-link">Why Kyndra?</a>
+        <a href="#problems" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-500 hover:text-blue-600 mobile-nav-link">Problems We Solve</a>
+        <a href="#modules" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-500 hover:text-blue-600 mobile-nav-link">Modules</a>
+        <a href="#stakeholders" class="block pl-3 pr-4 py-2 border-l-4 border-transparent text-base font-medium text-gray-600 hover:bg-gray-50 hover:border-blue-500 hover:text-blue-600 mobile-nav-link">For Whom?</a>
+      </div>
+      <div class="pt-4 pb-3 border-t border-gray-200">
+        <div class="px-4">
+          <a href="#contact" class="w-full flex items-center justify-center px-4 py-2.5 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-gradient-kyndra-btn hover:bg-gradient-to-r focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">Join Early Access</a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-50">
+    <div id="hero-particles"></div>
+    <div class="hero-content-wrapper container mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+      <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tight" data-aos="fade-down" data-aos-delay="100">
+        <span class="block text-gray-900">Your Child’s Future,</span>
+        <span class="block text-gradient-kyndra">Personalized.</span>
+      </h1>
+      <p class="mt-6 max-w-md mx-auto text-lg sm:text-xl text-gray-600 md:mt-8 md:max-w-2xl" data-aos="fade-up" data-aos-delay="200">
+        AI-Powered Private Schooling. At Home. On Your Terms. Kyndra is engineering the next generation of education.
+      </p>
+      <div class="mt-10 max-w-sm mx-auto sm:max-w-none sm:flex sm:justify-center" data-aos="fade-up" data-aos-delay="400">
+        <a href="#contact" class="w-full sm:w-auto flex items-center justify-center px-8 py-3.5 border border-transparent text-base font-semibold rounded-lg text-white bg-gradient-kyndra-btn shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105">
+          Join Early Access
+        </a>
+        <a href="#alignment" class="mt-3 sm:mt-0 sm:ml-4 w-full sm:w-auto flex items-center justify-center px-8 py-3.5 border-2 border-blue-600 text-base font-semibold rounded-lg text-blue-600 bg-white hover:bg-blue-50 transition-all duration-300">
+          Partner With Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="why-kyndra" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="section-title" data-aos="fade-up">Why Kyndra?</h2>
+        <p class="section-subtitle mt-4" data-aos="fade-up" data-aos-delay="100">In a world where traditional school systems are crumbling under the weight of limited capacity, outdated curricula, and growing safety concerns, Kyndra offers a smarter, safer, and more scalable alternative.</p>
+      </div>
+      <div class="max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+        <blockquote class="quote-block p-6 bg-indigo-50 rounded-lg shadow-md">
+          <p class="text-xl md:text-2xl italic text-indigo-700 font-medium text-center">
+            "You shouldn’t have to choose between quality education and your child’s well-being."
+          </p>
+        </blockquote>
+      </div>
+      <p class="mt-8 text-center text-lg text-gray-700 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="300">
+        Kyndra is a personalized education platform being designed for the 21st century — combining the flexibility of homeschooling, the rigor of private education, and the transformative power of AI.
+      </p>
+    </div>
+  </section>
+
+  <section id="problems" class="py-16 md:py-24 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="section-title" data-aos="fade-up">The Problems We Are Solving</h2>
+        <p class="section-subtitle mt-4" data-aos="fade-up" data-aos-delay="100">Kyndra is engineered to address the critical pain points in modern education.</p>
+      </div>
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="group p-6 bg-white rounded-xl shadow-lg card-hover-effect border border-gray-100" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex justify-center mb-4">
+            <svg class="w-16 h-16 text-red-500 animated-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zM3.75 9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 text-center mb-2">Overcrowded Classrooms</h3>
+          <p class="text-gray-600 text-sm text-center">Physical schools are at capacity. Kyndra's P-SaaS model offers instant scalability for personalized learning environments.</p>
+        </div>
+        <div class="group p-6 bg-white rounded-xl shadow-lg card-hover-effect border border-gray-100" data-aos="fade-up" data-aos-delay="250">
+          <div class="flex justify-center mb-4">
+            <svg class="w-16 h-16 text-yellow-600 animated-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /><path stroke-linecap="round" stroke-linejoin="round" d="M11.25 4.5l7.5 7.5-7.5 7.5M3.75 12h16.5" opacity="0.4" /></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 text-center mb-2">Teacher Shortages & Burnout</h3>
+          <p class="text-gray-600 text-sm text-center">Our AI tutors provide 24/7 support, augmenting human educators and allowing them to focus on higher-impact interactions.</p>
+        </div>
+        <div class="group p-6 bg-white rounded-xl shadow-lg card-hover-effect border border-gray-100" data-aos="fade-up" data-aos-delay="300">
+          <div class="flex justify-center mb-4">
+             <svg class="w-16 h-16 text-green-500 animated-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 text-center mb-2">Rigid Schedules</h3>
+          <p class="text-gray-600 text-sm text-center">Kyndra will offer learn-anytime, anywhere flexibility, perfectly suited for the dynamic needs of modern families and diverse learners.</p>
+        </div>
+        <div class="group p-6 bg-white rounded-xl shadow-lg card-hover-effect border border-gray-100" data-aos="fade-up" data-aos-delay="350">
+          <div class="flex justify-center mb-4">
+            <svg class="w-16 h-16 text-purple-500 animated-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 text-center mb-2">Safety & Well-being Concerns</h3>
+          <p class="text-gray-600 text-sm text-center">We aim to provide a secure learning sanctuary, free from the physical and social anxieties often present in traditional school settings.</p>
+        </div>
+        <div class="group p-6 bg-white rounded-xl shadow-lg card-hover-effect border border-gray-100" data-aos="fade-up" data-aos-delay="400">
+          <div class="flex justify-center mb-4">
+             <svg class="w-16 h-16 text-indigo-500 animated-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L1.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.25 12L17.437 14.846a4.5 4.5 0 01-3.09 3.09L11.5 21l2.846.813a4.5 4.5 0 013.09 3.09L17.437 27.75l.813-2.846a4.5 4.5 0 013.09-3.09L24.5 21l-2.846-.813a4.5 4.5 0 01-3.09-3.09L18.25 12z" opacity="0.4"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 1.5l.813 2.846a4.5 4.5 0 003.09 3.09L18.75 9l-2.846.813a4.5 4.5 0 00-3.09 3.09L12 15.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L5.25 9l2.846-.813a4.5 4.5 0 003.09-3.09L12 1.5z" /></svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-800 text-center mb-2">One-Size-Fits-All Learning</h3>
+          <p class="text-gray-600 text-sm text-center">Kyndra's AI is being designed to adapt to every learner’s unique pace, skill level, and interests, fostering true mastery.</p>
+        </div>
+         <div class="group p-6 bg-white rounded-xl shadow-lg card-hover-effect border border-gray-100 flex flex-col items-center justify-center text-center md:col-span-1 lg:col-span-1" data-aos="fade-up" data-aos-delay="450">
+            <svg class="w-16 h-16 text-blue-500 mb-4 animated-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a.75.75 0 00.75-.75V6.032a6.701 6.701 0 01-1.5 0V18a.75.75 0 00.75.75zM12 3.75a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zM17.25 11.25a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5zM6.75 11.25a2.25 2.25 0 100 4.5 2.25 2.25 0 000-4.5z" />
+            </svg>
+            <h3 class="text-xl font-semibold text-gray-800 mb-2">And More...</h3>
+            <p class="text-gray-600 text-sm">We're tackling the multifaceted challenges of modern education head-on.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="modules" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="section-title" data-aos="fade-up">The Kyndra Platform Modules (Under Development)</h2>
+        <p class="section-subtitle mt-4" data-aos="fade-up" data-aos-delay="100">Our P-SaaS architecture is built upon distinct yet interconnected modules, all powered by the central KyndraAI engine.</p>
+      </div>
+      <div class="max-w-4xl mx-auto">
+        <div class="grid md:grid-cols-2 gap-8">
+          <div class="bg-gray-50 p-8 rounded-xl shadow-lg card-hover-effect border border-gray-100" data-aos="fade-up" data-aos-delay="200">
+            <div class="flex items-center mb-3">
+                <div class="p-3 bg-blue-100 rounded-full mr-4">
+                    <svg class="w-8 h-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6.042A8.967 8.967 0 006 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 016 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 016-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0018 18a8.967 8.967 0 00-6 2.292m0-14.25v14.25" /></svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-800">Kyndra Learn</h3>
+            </div>
+            <p class="text-gray-600 text-sm">Core academic subjects (initially Grades 5–8) aligned with Common Core standards, delivered through AI-personalized learning paths.</p>
+          </div>
+          <div class="bg-gray-50 p-8 rounded-xl shadow-lg card-hover-effect border border-gray-100" data-aos="fade-up" data-aos-delay="300">
+             <div class="flex items-center mb-3">
+                <div class="p-3 bg-green-100 rounded-full mr-4">
+                    <svg class="w-8 h-8 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25H12" /></svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-800">Kyndra Path</h3>
+            </div>
+            <p class="text-gray-600 text-sm">Career-aligned microtracks in future-focused fields like AI, coding, digital media, and entrepreneurship, fostering practical skills.</p>
+          </div>
+          <div class="bg-gray-50 p-8 rounded-xl shadow-lg card-hover-effect border border-gray-100" data-aos="fade-up" data-aos-delay="400">
+            <div class="flex items-center mb-3">
+                <div class="p-3 bg-purple-100 rounded-full mr-4">
+                    <svg class="w-8 h-8 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 100 15 7.5 7.5 0 000-15z" /><path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197" /></svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-800">Kyndra Insight</h3>
+            </div>
+            <p class="text-gray-600 text-sm">Personalized diagnostics, live progress dashboards, and adaptive learning profiles offering actionable insights for students, parents, and educators.</p>
+          </div>
+          <div class="bg-gray-50 p-8 rounded-xl shadow-lg card-hover-effect border border-gray-100" data-aos="fade-up" data-aos-delay="500">
+            <div class="flex items-center mb-3">
+                <div class="p-3 bg-indigo-100 rounded-full mr-4">
+                    <svg class="w-8 h-8 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 21v-1.5M15.75 3v1.5m0 16.5v-1.5" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 18.75a6 6 0 006-6H6a6 6 0 006 6z" /><path stroke-linecap="round" stroke-linejoin="round" d="M12 12.75V12m0 0V9.75m0 2.25c1.125 0 2.25-.375 3-.938m-3 .938c-1.125 0-2.25-.375-3-.938m0-3.75c.75.563 1.875.938 3 .938m0 0c1.125 0 2.25-.375 3-.938m-3 .938V6.75A2.25 2.25 0 0112 4.5c0-.49.162-.948.438-1.313m0 0A2.25 2.25 0 0012 2.25c-1.241 0-2.25 1.009-2.25 2.25 0 .365.088.708.238 1.018M12 9.75c1.125 0 2.25.375 3 .938" /></svg>
+                </div>
+                <h3 class="text-2xl font-semibold text-gray-800">KyndraAI</h3>
+            </div>
+            <p class="text-gray-600 text-sm">Our custom-built AI engine (evolving from GPT-4o to a self-hosted SML) designed to deliver real-time tutoring, smart feedback, and infinite personalization across all modules.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="stakeholders" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="section-title" data-aos="fade-up">Who Is Kyndra For?</h2>
+        <p class="section-subtitle mt-4" data-aos="fade-up" data-aos-delay="100">Kyndra is being designed to serve a diverse ecosystem of learners and educational providers.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div class="p-6 text-center" data-aos="fade-up" data-aos-delay="200">
+          <div class="flex justify-center mb-4"><div class="p-3 bg-blue-100 rounded-full"><svg class="w-10 h-10 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M18 18.72a9.094 9.094 0 003.741-.479 3 3 0 00-4.682-2.72m.94 3.198l.001.031c0 .225-.012.447-.037.666A11.944 11.944 0 0112 21c-2.17 0-4.207-.576-5.963-1.584A6.062 6.062 0 016 18.719m12 0a5.971 5.971 0 00-.941-3.197m0 0A5.995 5.995 0 0012 12.75a5.995 5.995 0 00-5.058 2.772m0 0a3 3 0 00-4.681 2.72 8.986 8.986 0 003.74.477m.94-3.197a5.971 5.971 0 00-.94 3.197M15 6.75a3 3 0 11-6 0 3 3 0 016 0zm6 3a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0zM3.75 9a2.25 2.25 0 11-4.5 0 2.25 2.25 0 014.5 0z" /></svg></div></div>
+          <h4 class="text-lg font-semibold text-gray-800 mb-1">Parents</h4>
+          <p class="text-gray-600 text-sm">Seeking flexible, future-ready, and safe education for their children.</p>
+        </div>
+        <div class="p-6 text-center" data-aos="fade-up" data-aos-delay="300">
+          <div class="flex justify-center mb-4"><div class="p-3 bg-green-100 rounded-full"><svg class="w-10 h-10 text-green-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5m-18-18h16.5a2.25 2.25 0 012.25 2.25v11.25a2.25 2.25 0 01-2.25 2.25H3.75A2.25 2.25 0 011.5 18V4.5A2.25 2.25 0 013.75 3zM12 15.75V21m0-10.5V3.75" /></svg></div></div>
+          <h4 class="text-lg font-semibold text-gray-800 mb-1">Microschools & Pods</h4>
+          <p class="text-gray-600 text-sm">Ready to scale with turnkey curriculum, AI tools, and administrative support.</p>
+        </div>
+        <div class="p-6 text-center" data-aos="fade-up" data-aos-delay="400">
+          <div class="flex justify-center mb-4"><div class="p-3 bg-purple-100 rounded-full"><svg class="w-10 h-10 text-purple-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A11.978 11.978 0 0112 16.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0021 12c0-.778.099-1.533.284-2.253M12 16.5c2.485 0 4.5 4.03 4.5 9M12 16.5c-2.485 0-4.5 4.03-4.5 9" /></svg></div></div>
+          <h4 class="text-lg font-semibold text-gray-800 mb-1">States & Voucher Programs</h4>
+          <p class="text-gray-600 text-sm">Aiming to lower costs while increasing access to quality, personalized education options.</p>
+        </div>
+        <div class="p-6 text-center" data-aos="fade-up" data-aos-delay="500">
+          <div class="flex justify-center mb-4"><div class="p-3 bg-indigo-100 rounded-full"><svg class="w-10 h-10 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" /></svg></div></div>
+          <h4 class="text-lg font-semibold text-gray-800 mb-1">Teachers & Tutors</h4>
+          <p class="text-gray-600 text-sm">Looking to multiply their impact, reach more students, and leverage AI-powered teaching tools.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="benefits" class="py-16 md:py-24 bg-gray-50">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 md:mb-16">
+            <h2 class="section-title" data-aos="fade-up">Benefits We Aim to Deliver</h2>
+        </div>
+        <div class="grid lg:grid-cols-2 gap-10">
+            <div class="benefit-card p-8 rounded-xl shadow-lg" data-aos="fade-right">
+                <h3 class="text-2xl font-semibold text-blue-600 mb-4">For Parents & Students</h3>
+                <ul class="space-y-3 text-gray-700">
+                    <li class="flex items-start"><span class="text-blue-500 mr-2 mt-1">&#10004;</span> <span><strong>Peace of Mind:</strong> A safe, supportive, and bully-free learning environment.</span></li>
+                    <li class="flex items-start"><span class="text-blue-500 mr-2 mt-1">&#10004;</span> <span><strong>Affordable Excellence:</strong> Access to a private school experience, potentially via vouchers.</span></li>
+                    <li class="flex items-start"><span class="text-blue-500 mr-2 mt-1">&#10004;</span> <span><strong>Personalized Pace:</strong> Students learn at their own speed, ensuring mastery.</span></li>
+                    <li class="flex items-start"><span class="text-blue-500 mr-2 mt-1">&#10004;</span> <span><strong>Future-Ready Skills:</strong> Option to choose real-world career tracks alongside core academics.</span></li>
+                    <li class="flex items-start"><span class="text-blue-500 mr-2 mt-1">&#10004;</span> <span><strong>Full Visibility:</strong> Real-time dashboards for parents to track progress and engagement.</span></li>
+                </ul>
+            </div>
+            <div class="benefit-card p-8 rounded-xl shadow-lg" data-aos="fade-left">
+                <h3 class="text-2xl font-semibold text-green-600 mb-4">For Educators & Institutions</h3>
+                <ul class="space-y-3 text-gray-700">
+                    <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">&#10004;</span> <span><strong>AI-Powered Support:</strong> Tools to augment teaching, not replace it, reducing workload.</span></li>
+                    <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">&#10004;</span> <span><strong>Scalable Delivery:</strong> Efficiently deliver high-quality content to any group size, anywhere.</span></li>
+                    <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">&#10004;</span> <span><strong>Reduced Burnout:</strong> Focus on impactful teaching and mentorship, less on repetitive tasks.</span></li>
+                    <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">&#10004;</span> <span><strong>Cost Efficiency (for Govt./Vouchers):</strong> Potential for lower per-student costs while expanding access.</span></li>
+                    <li class="flex items-start"><span class="text-green-500 mr-2 mt-1">&#10004;</span> <span><strong>Data-Driven Insights:</strong> Performance analytics for continuous improvement and accountability.</span></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+  </section>
+
+  <section id="safety" class="py-16 md:py-24 bg-indigo-600 text-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <svg class="w-16 h-16 mx-auto mb-6 text-indigo-300" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+        <h2 class="text-3xl font-extrabold mb-4" data-aos="fade-up">Safety First: A Secure Learning Sanctuary</h2>
+        <blockquote class="max-w-2xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+            <p class="text-xl italic text-indigo-200">
+                "Every parent wants the best for their child. But above all, they want them safe."
+            </p>
+        </blockquote>
+        <p class="mt-6 text-lg text-indigo-100 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="200">
+            Kyndra aims to eliminate the risks associated with physical school environments. No lockdown drills. No bullying. No peer-induced anxieties. Just a focused, supportive, and secure space for learning, growing, and thriving from the comfort of home.
+        </p>
+    </div>
+  </section>
+
+  <section id="mission" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 class="section-title text-gradient-kyndra mb-6" data-aos="fade-up">Our Mission</h2>
+        <p class="text-2xl md:text-3xl font-medium text-gray-700 max-w-3xl mx-auto" data-aos="fade-up" data-aos-delay="100">
+            To make world-class personalized education universally accessible, emotionally safe, and endlessly scalable.
+        </p>
+    </div>
+  </section>
+  
+  <section id="roadmap" class="py-16 md:py-24 bg-gray-50"> <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 md:mb-16">
+        <h2 class="section-title" data-aos="fade-up">Our Development Journey: Key Milestones</h2>
+        <p class="section-subtitle mt-4" data-aos="fade-up" data-aos-delay="100">We are on an ambitious but achievable path to bring Kyndra to life. Here's a look at our immediate focus for the next 90 days.</p>
+      </div>
+      <div class="max-w-3xl mx-auto">
+        <div class="space-y-12">
+          <div class="relative roadmap-step pl-8 py-4 group" data-aos="fade-right">
+            <div class="absolute top-5 left-[-7.5px] w-4 h-4 rounded-full roadmap-dot transition-colors duration-300"></div>
+            <p class="text-xs text-blue-500 font-semibold uppercase tracking-wider mb-1">Days 1 – 30</p>
+            <h4 class="text-xl font-semibold text-gray-800 mb-1">MVP Foundation & Core AI</h4>
+            <p class="text-gray-600 text-sm">Finalize MVP UI/UX specifications. Launch initial GPT-4o powered AI tutoring agent. Build and test Kyndra Learn v1 content modules.</p>
+          </div>
+          <div class="relative roadmap-step pl-8 py-4 group" data-aos="fade-right" data-aos-delay="100">
+            <div class="absolute top-5 left-[-7.5px] w-4 h-4 rounded-full roadmap-dot transition-colors duration-300"></div>
+            <p class="text-xs text-blue-500 font-semibold uppercase tracking-wider mb-1">Days 31 – 60</p>
+            <h4 class="text-xl font-semibold text-gray-800 mb-1">Pilot Launch & Iteration</h4>
+            <p class="text-gray-600 text-sm">Onboard first cohort of 100-300 pilot students. Implement robust feedback and data logging mechanisms. Pilot initial versions of Kyndra Path and Kyndra Insight modules.</p>
+          </div>
+          <div class="relative roadmap-step pl-8 py-4 group" data-aos="fade-right" data-aos-delay="200">
+            <div class="absolute top-5 left-[-7.5px] w-4 h-4 rounded-full roadmap-dot transition-colors duration-300"></div>
+            <p class="text-xs text-blue-500 font-semibold uppercase tracking-wider mb-1">Days 61 – 90</p>
+            <h4 class="text-xl font-semibold text-gray-800 mb-1">KyndraAI Engine Development</h4>
+            <p class="text-gray-600 text-sm">Commence SML training pipeline development using logged pilot data. Test early inference capabilities and architect the migration path from GPT-4o to our self-hosted KyndraAI.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="alignment" class="py-16 md:py-24 bg-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12 md:mb-16">
+            <h2 class="section-title" data-aos="fade-up">Join the Movement: Strategic Alignment & The Future of Kyndra</h2>
+            <p class="section-subtitle mt-4" data-aos="fade-up" data-aos-delay="100">We are building Kyndra for long-term, category-defining value. We are focused on deep impact and are open to strategic partnerships with schools, investors, researchers, and microschool operators aligned with our mission to reimagine education. If you're building the future too, let's connect.</p>
+        </div>
+        <div class="max-w-4xl mx-auto grid md:grid-cols-2 gap-8 items-center">
+            <div data-aos="fade-right">
+                <h3 class="text-2xl font-bold text-gray-800 mb-4">The Team Driving Kyndra</h3>
+                <p class="text-gray-600 mb-6">Kyndra is a collaborative venture, bringing together expertise in technology, education, and strategic growth:</p>
+                <ul class="space-y-4">
+                    <li><strong class="text-blue-600">Quartermasters:</strong> Leading technology & platform development (AI/Cloud).</li>
+                    <li><strong class="text-green-600">SkillvenzA:</strong> Spearheading operations, content, user onboarding, and academic delivery.</li>
+                    <li><strong class="text-purple-600">Aliff Capital:</strong> Managing funding, strategic oversight, governance, and key partnerships.</li>
+                </ul>
+            </div>
+            <div class="grid grid-cols-3 gap-4 items-center" data-aos="fade-left" data-aos-delay="100">
+                <div class="partner-logo-placeholder h-24 flex items-center justify-center rounded-lg"><span class="text-gray-400 text-sm">Quartermasters</span></div>
+                <div class="partner-logo-placeholder h-24 flex items-center justify-center rounded-lg"><span class="text-gray-400 text-sm">SkillvenzA</span></div>
+                <div class="partner-logo-placeholder h-24 flex items-center justify-center rounded-lg"><span class="text-gray-400 text-sm">Aliff Capital</span></div>
+            </div>
+        </div>
+         <div class="text-center mt-12" data-aos="fade-up" data-aos-delay="200">
+             <a href="#contact" class="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-gradient-kyndra-btn hover:shadow-lg transition-all duration-300">
+                Partner With Us
+            </a>
+        </div>
+    </div>
+  </section>
+  
+  <section id="contact" class="py-16 md:py-24 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <h2 class="text-3xl sm:text-4xl font-extrabold mb-6" data-aos="fade-up">Explore the Future of Learning With Kyndra</h2>
+      <p class="text-lg text-indigo-100 max-w-2xl mx-auto mb-10" data-aos="fade-up" data-aos-delay="100">
+        Be among the first to experience Kyndra. Join our early access program, download our whitepaper to understand our vision, or explore partnership opportunities to help shape the next generation of education.
+      </p>
+      <div class="flex flex-col sm:flex-row justify-center items-center gap-4" data-aos="fade-up" data-aos-delay="200">
+        <a href="mailto:hello@skillvenza.com?subject=Kyndra Early Access Inquiry" class="bg-white text-blue-600 px-8 py-3.5 rounded-lg text-base font-semibold shadow-lg hover:bg-gray-100 transition-colors transform hover:scale-105 inline-block w-full sm:w-auto">
+          Join Early Access
+        </a>
+         <a href="#" class="border-2 border-white text-white px-8 py-3.5 rounded-lg text-base font-semibold hover:bg-white hover:text-purple-600 transition-colors transform hover:scale-105 inline-block w-full sm:w-auto">
+          Download Whitepaper
+        </a>
+        <a href="mailto:hello@skillvenza.com?subject=Kyndra Partnership Inquiry" class="border-2 border-white text-white px-8 py-3.5 rounded-lg text-base font-semibold hover:bg-white hover:text-purple-600 transition-colors transform hover:scale-105 inline-block w-full sm:w-auto">
+          Partner With Us
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="bg-gray-800 text-gray-400 py-12">
+    <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="md:flex md:justify-between md:items-center">
+        <div class="mb-6 md:mb-0">
+          <a href="#hero" class="text-3xl font-extrabold text-gradient-kyndra">Kyndra</a>
+          <p class="mt-2 text-sm">Engineering the Future of Intelligent Learning.</p>
+        </div>
+        <div class="grid grid-cols-2 gap-8 sm:gap-6 sm:grid-cols-3">
+          <div>
+            <h2 class="mb-4 text-sm font-semibold text-gray-200 uppercase">Explore</h2>
+            <ul class="space-y-3">
+              <li><a href="#why-kyndra" class="footer-link">Why Kyndra?</a></li>
+              <li><a href="#modules" class="footer-link">Modules</a></li>
+              <li><a href="#roadmap" class="footer-link">Roadmap</a></li>
+            </ul>
+          </div>
+          <div>
+            <h2 class="mb-4 text-sm font-semibold text-gray-200 uppercase">Connect</h2>
+            <ul class="space-y-3">
+              <li><a href="mailto:hello@skillvenza.com" class="footer-link">Contact Us</a></li>
+              <li><a href="#alignment" class="footer-link">Partnerships</a></li>
+              <li><a href="#" class="footer-link">Careers (Join Our Team)</a></li>
+            </ul>
+          </div>
+           <div>
+            <h2 class="mb-4 text-sm font-semibold text-gray-200 uppercase">Legal</h2>
+            <ul class="space-y-3">
+              <li><a href="#" class="footer-link">Privacy Policy (Draft)</a></li>
+              <li><a href="#" class="footer-link">Terms of Service (Draft)</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <hr class="my-8 border-gray-700" />
+      <div class="text-center text-sm">
+        <p class="mb-2">&copy; <span id="year"></span> Kyndra. A Project of Aliff Capital, Skillvenza, and Quartermasters.</p>
+        <div class="space-x-4">
+          <a href="https://www.aliffcapital.com" target="_blank" rel="noopener" class="footer-link hover:underline">Aliff Capital</a>
+          <span>&bull;</span>
+          <a href="https://www.skillvenza.com" target="_blank" rel="noopener" class="footer-link hover:underline">Skillvenza</a>
+          <span>&bull;</span>
+          <a href="https://www.quartermasters.me" target="_blank" rel="noopener" class="footer-link hover:underline">Quartermasters</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  
+  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      AOS.init({
+        duration: 800,
+        once: true,
+        offset: 50 
+      });
+
+      document.getElementById("year").innerText = new Date().getFullYear();
+
+      const mainNav = document.getElementById('mainNav');
+      const desktopNavLinks = Array.from(mainNav.querySelectorAll('.hidden.md\\:flex .nav-link'));
+      const mobileNavLinks = Array.from(document.querySelectorAll('#mobileMenu .mobile-nav-link'));
+      const allNavLinks = [...desktopNavLinks, ...mobileNavLinks];
+      const sections = Array.from(document.querySelectorAll('section[id]'));
+
+      function onScroll() {
+        if (window.scrollY > 50) {
+          mainNav.classList.add('nav-scrolled');
+        } else {
+          mainNav.classList.remove('nav-scrolled');
+        }
+
+        let currentSectionId = sections[0].id; 
+        for (const section of sections) {
+          const sectionTop = section.offsetTop;
+          if (pageYOffset >= sectionTop - mainNav.offsetHeight - 50) { 
+            currentSectionId = section.id;
+          } else {
+            break; 
+          }
+        }
+        
+        allNavLinks.forEach(link => {
+          link.classList.remove('active');
+          if (link.classList.contains('mobile-nav-link')) { 
+            link.classList.remove('border-blue-500', 'text-blue-600', 'bg-blue-50');
+          }
+          if (link.getAttribute('href') === `#${currentSectionId}`) {
+            link.classList.add('active');
+            if (link.classList.contains('mobile-nav-link')) {
+                link.classList.add('border-blue-500', 'text-blue-600', 'bg-blue-50');
+            }
+          }
+        });
+      }
+      window.addEventListener('scroll', onScroll);
+      onScroll(); 
+
+      const mobileMenuButton = document.getElementById('mobileMenuButton');
+      const mobileMenu = document.getElementById('mobileMenu');
+      mobileMenuButton.addEventListener('click', () => {
+        const isExpanded = mobileMenuButton.getAttribute('aria-expanded') === 'true' || false;
+        mobileMenuButton.setAttribute('aria-expanded', !isExpanded);
+        mobileMenu.classList.toggle('hidden');
+      });
+      mobileMenu.querySelectorAll('a').forEach(link => {
+        link.addEventListener('click', () => {
+          mobileMenu.classList.add('hidden');
+          mobileMenuButton.setAttribute('aria-expanded', 'false');
+        });
+      });
+
+      const counters = document.querySelectorAll('.stat-counter');
+      const animateStatCounter = (counter) => {
+        const targetValue = counter.getAttribute('data-target');
+        const suffix = counter.getAttribute('data-suffix') || '';
+        let target = 0;
+        
+        if (targetValue.toUpperCase().includes('M')) {
+            target = parseFloat(targetValue) * 1000000;
+        } else if (targetValue.toUpperCase().includes('K')) {
+            target = parseFloat(targetValue) * 1000;
+        } else {
+            target = parseFloat(targetValue);
+        }
+        if(isNaN(target)) target = 0;
+
+
+        let current = 0;
+        const increment = target / 100; 
+        const duration = 1500; 
+        const stepTime = Math.max(10, duration / 100); 
+
+        const updateCount = () => {
+          current += increment;
+          if (current < target) {
+            if (targetValue.toUpperCase().includes('M')) {
+                counter.innerText = (current / 1000000).toFixed(1).replace('.0','') + 'M';
+            } else if (targetValue.toUpperCase().includes('K')) {
+                counter.innerText = (current / 1000).toFixed(1).replace('.0','') + 'K';
+            } else {
+                counter.innerText = Math.ceil(current).toLocaleString();
+            }
+            if(suffix && !targetValue.toUpperCase().includes('M') && !targetValue.toUpperCase().includes('K')) {
+                counter.innerText += suffix;
+            }
+            setTimeout(updateCount, stepTime);
+          } else {
+            counter.innerText = targetValue + suffix; 
+          }
+        };
+        updateCount();
+      };
+      
+      const statObserver = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            animateStatCounter(entry.target);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.3 });
+      counters.forEach(counter => statObserver.observe(counter));
+
+      const lxdTabButtons = document.querySelectorAll('.lxd-tab');
+      const lxdTabContents = document.querySelectorAll('.lxd-tab-content');
+      lxdTabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+          const targetTabId = button.getAttribute('data-tab');
+          lxdTabButtons.forEach(btn => btn.classList.remove('active'));
+          button.classList.add('active');
+          lxdTabContents.forEach(content => {
+            content.classList.add('hidden');
+            if (content.id === targetTabId) {
+              content.classList.remove('hidden');
+            }
+          });
+        });
+      });
+
+      const testimonials = [
+        { quote: "Kyndra's vision for an AI-powered P-SaaS platform is incredibly promising. It addresses key challenges in education with a forward-thinking, scalable approach.", name: "Dr. Alistair Finch", title: "EdTech Futurist & Advisor" },
+        { quote: "The potential for Kyndra to truly personalize learning at scale is exciting. We are eager to see the platform develop and support its mission.", name: "Elena Rodriguez", title: "Director, Innovative Learning Foundation" },
+        { quote: "Kyndra's focus on integrating Learn, Experience, and Discover modules within an AI framework is exactly the kind of holistic solution education needs.", name: "Ben Carter", title: "Technology Integration Specialist" }
+      ];
+      let currentTestimonialIndex = 0;
+      const testimonialCarouselEl = document.getElementById('testimonialCarousel');
+      const prevTestimonialBtn = document.getElementById('prevTestimonial');
+      const nextTestimonialBtn = document.getElementById('nextTestimonial');
+
+      function renderTestimonial() {
+        if (!testimonialCarouselEl || testimonials.length === 0) {
+            if(testimonialCarouselEl) testimonialCarouselEl.innerHTML = '<div class="text-center text-gray-500 italic">Early feedback on our vision is very positive. Full testimonials coming soon.</div>';
+            if(prevTestimonialBtn) prevTestimonialBtn.style.display = 'none';
+            if(nextTestimonialBtn) nextTestimonialBtn.style.display = 'none';
+            return;
+        }
+        const testimonial = testimonials[currentTestimonialIndex];
+        testimonialCarouselEl.style.opacity = 0;
+        setTimeout(() => {
+            testimonialCarouselEl.innerHTML = `
+            <div class="testimonial-item active text-center">
+                <svg class="w-12 h-12 mx-auto mb-4 text-blue-500" fill="currentColor" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><path d="M0 13.714L6.857 0h9.143v13.714H4.571V27.43H0V13.714zM16 13.714L22.857 0h9.143v13.714H20.571V27.43H16V13.714z"></path></svg>
+                <p class="text-lg md:text-xl italic text-gray-700 mb-6">"${testimonial.quote}"</p>
+                <p class="font-semibold text-gray-900">${testimonial.name}</p>
+                <p class="text-sm text-gray-500">${testimonial.title}</p>
+            </div>
+            `;
+            testimonialCarouselEl.style.opacity = 1;
+            testimonialCarouselEl.style.transition = 'opacity 0.4s ease-in-out';
+        }, 300);
+      }
+      
+      if (prevTestimonialBtn && nextTestimonialBtn) {
+          prevTestimonialBtn.addEventListener('click', () => {
+            currentTestimonialIndex = (currentTestimonialIndex - 1 + testimonials.length) % testimonials.length;
+            renderTestimonial();
+          });
+          nextTestimonialBtn.addEventListener('click', () => {
+            currentTestimonialIndex = (currentTestimonialIndex + 1) % testimonials.length;
+            renderTestimonial();
+          });
+          renderTestimonial(); 
+          if (testimonials.length > 1) {
+            setInterval(() => {
+                nextTestimonialBtn.click();
+            }, 7000);
+          }
+      } else {
+          renderTestimonial(); 
+      }
+
+      if (document.getElementById('hero-particles')) {
+        particlesJS("hero-particles", {
+          "particles": {
+            "number": {"value": 50, "density": {"enable": true, "value_area": 800}},
+            "color": {"value": ["#2563EB", "#7C3AED", "#10B981"]}, 
+            "shape": {"type": "circle"},
+            "opacity": {"value": 0.3, "random": true, "anim": {"enable": true, "speed": 0.5, "opacity_min": 0.05, "sync": false}},
+            "size": {"value": 3, "random": true, "anim": {"enable": false}},
+            "line_linked": {"enable": true, "distance": 150, "color": "#CBD5E1", "opacity": 0.2, "width": 1}, 
+            "move": {"enable": true, "speed": 1.2, "direction": "none", "random": true, "straight": false, "out_mode": "out", "bounce": false}
+          },
+          "interactivity": {
+            "detect_on": "canvas",
+            "events": {"onhover": {"enable": true, "mode": "grab"}, "onclick": {"enable": false}, "resize": true},
+            "modes": {"grab": {"distance": 140, "line_linked": {"opacity": 0.3}}}
+          },
+          "retina_detect": true
+        });
+      }
+    });
+  </script>
+</body>
+</html>

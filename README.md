@@ -1,0 +1,1 @@
+# Kyndra Frontend (Next.js)
