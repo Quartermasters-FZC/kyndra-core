@@ -1,4 +1,4 @@
-import Head from 'next/head'
+import Head from 'next/head';
 
 export default function Home() {
   return (
@@ -8,7 +8,6 @@ export default function Home() {
         <meta name="description" content="Kyndra is an AI-powered P-SaaS platform transforming education." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
-        <script src="https://cdn.tailwindcss.com"></script>
       </Head>
 
       <main className="bg-white text-gray-800 min-h-screen px-6 py-16 text-center">
@@ -18,9 +17,16 @@ export default function Home() {
         </p>
 
         <div className="mt-12 space-y-4">
-          <a href="/Public/Market Research.html" className="text-blue-600 underline">📊 Market Research</a>
-          <a href="/Public/Kyndra P-SaaS Market Infographic.html" className="text-green-600 underline">📈 Infographic</a>
-          <a href="https://docs.google.com/document/d/1egcEePWUn3Q9pUhUPf_CLNVxIiW0uIhv9sb1v0IpBoY" target="_blank" rel="noopener noreferrer" className="text-purple-600 underline">📄 Full Report</a>
+          <a href="/market-research.html" className="text-blue-600 underline">📊 Market Research</a>
+          <a href="/kyndra-infographic.html" className="text-green-600 underline">📈 Infographic</a>
+          <a
+            href="https://docs.google.com/document/d/1egcEePWUn3Q9pUhUPf_CLNVxIiW0uIhv9sb1v0IpBoY"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-purple-600 underline"
+          >
+            📄 Full Report
+          </a>
         </div>
 
         <footer className="mt-20 text-sm text-gray-400">
